@@ -1,0 +1,45 @@
+# docker stack deploy -c docker-compose.yml bindman
+version: '3.5'
+
+services:
+
+  bind:
+    image: abilioesteves/bind9:0.0.3
+    volumes:
+      - data:/keys
+    ports:
+    - "53:53/udp"
+    - "53:53/tcp"
+    - "10000:10000/tcp"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 5s
+
+  bindman-dns-bind9:
+    image: labbsr0x/bindman-dns-bind9
+    build: .
+    volumes:
+      - data:/data
+    ports:
+      - 7070:7070
+    environment:
+      - BINDMAN_NAMESERVER_ADDRESS=bind
+      - BINDMAN_NAMESERVER_KEY_FILE=Ktest.com.+157+50086.key
+      - BINDMAN_NAMESERVER_ZONE=test.com
+      - BINDMAN_DNS_REMOVAL_DELAY=1
+      - BINDMAN_DEBUG=false
+
+  bindman-dns-file-agent:
+    image: labbsr0x/bindman-dns-file-agent
+    build: .
+    environment:
+      - BINDMAN_DNS_MANAGER_ADDR=bindman-dns-bind9:7070
+      - BINDMAN_DNS_REVERSE_PROXY_ADDR=0.0.0.0
+      - BINDMAN_DNS_CONFIG_FILE=agent.conf
+
+
+volumes:
+  data:
