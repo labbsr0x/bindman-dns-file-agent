@@ -1,0 +1,20 @@
+{
+	"domain":"labbs.com.br",
+	"records":[
+		{
+			"name":"smtp",
+			"value":"127.0.0.1",
+			"type":"A"
+		},
+		{
+			"name":"imap",
+			"value":"127.0.0.1",
+			"type":"A"
+		},
+		{
+			"name":"pop3",
+			"value":"127.0.0.1",
+			"type":"A"
+		}
+	]
+}

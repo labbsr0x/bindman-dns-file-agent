@@ -38,7 +38,7 @@ services:
     environment:
       - BINDMAN_DNS_MANAGER_ADDR=bindman-dns-bind9:7070
       - BINDMAN_DNS_REVERSE_PROXY_ADDR=0.0.0.0
-      - BINDMAN_DNS_CONFIG_FILE=agent.conf
+      - BINDMAN_DNS_CONFIG_FILE=bindman_agent.json
 
 
 volumes:

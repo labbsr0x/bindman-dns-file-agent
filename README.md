@@ -16,9 +16,9 @@ Some parameters are required to running the api, these parameters can be passed 
 
 | ENV                              | Command | Required | Default  | Description                                        |
 |----------------------------------|---------|----------|----------|----------------------------------------------------|
-| BINDMAN_DNS_MANAGER_ADDR         | -d      | true     | null     | DNS Manager Address                                |
-| BINDMAN_DNS_REVERSE_PROXY_ADDR   | -r      | true     | null     | DNS Reverse Proxy Address                          |
-| BINDMAN_DNS_CONFIG_FILE          | -f      | true     | null     | DNS Config File                                    |
+| BINDMAN_DNS_MANAGER_ADDR         | -d      | true     | null     | Bindman DNS Manager Address                        |
+| BINDMAN_DNS_REVERSE_PROXY_ADDR   | -r      | true     | null     | Bindman DNS Reverse Proxy Address                  |
+| BINDMAN_AGENT_CONFIG_PATH        | -c      | true     | null     | Bindman Agent Config Path                          |
 
 
 ## How to run
@@ -32,7 +32,7 @@ $ cd bindman-dns-file-agent
 $ go run main.go agent \
 -d=bindman-dns-bind9:7070 \
 -r=0.0.0.0 \
--f=agent.conf
+-c=bindman_agent.json
 ```
 
 For production environments
@@ -41,5 +41,5 @@ For production environments
 $ go run main.go agent
 $ ENV BINDMAN_DNS_MANAGER_ADDR="bindman-dns-bind9:7070"
 $ ENV BINDMAN_DNS_REVERSE_PROXY_ADDR="0.0.0.0"
-$ ENV BINDMAN_DNS_CONFIG_FILE="agent.conf"
+$ ENV BINDMAN_AGENT_CONFIG_PATH="bindman_agent.json"
 ```
