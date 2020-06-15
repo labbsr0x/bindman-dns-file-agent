@@ -26,11 +26,6 @@ type Records struct {
 	Type string `json:"type"`
 }
 
-// FileBuilder defines the parametric information of a server instance
-type FileBuilder struct {
-	*File
-}
-
 func (t File) toString() string {
 	bytes, err := json.Marshal(t)
 	if err != nil {
@@ -50,15 +45,4 @@ func GetFile(path string) File {
 	var file File
 	json.Unmarshal(raw, &file)
 	return file
-}
-
-// Init initializes the web server builder with properties retrieved from Viper.
-func (b *FileBuilder) Init(path string) *FileBuilder {
-	file := GetFile(path)
-
-	fmt.Println(file.Domain)
-
-	// b.File := GetFile(path)
-
-	return b
 }

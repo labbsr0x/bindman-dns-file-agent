@@ -19,17 +19,6 @@ var agentCmd = &cobra.Command{
 		// agent.Sync()
 		agent.Run()
 		return nil
-
-		// f := file.GetFile("/Users/fabiotavarespr/Projetos/BB/bindman-dns-file-agent/bindman_agent.json")
-
-		// fmt.Println(f.Domain)
-
-		// for _, record := range f.Records {
-		// 	fmt.Println(record.Name)
-		// 	fmt.Println(record.Value)
-		// 	fmt.Println(record.Type)
-		// }
-		// return nil
 	},
 }
 

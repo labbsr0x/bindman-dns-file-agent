@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+	"time"
 
 	hook "github.com/labbsr0x/bindman-dns-webhook/src/client"
 
@@ -16,7 +17,7 @@ import (
 
 type Agent struct {
 	*config.AgentBuilder
-	*file.FileBuilder
+	file          file.File
 	app           *gin.Engine
 	SyncLock      *sync.RWMutex
 	WebhookClient *hook.DNSWebhookClient
@@ -26,7 +27,7 @@ type Agent struct {
 func (a *Agent) InitFromAgentBuilder(agentBuilder *config.AgentBuilder) *Agent {
 	a.AgentBuilder = agentBuilder
 	a.app = gin.Default()
-	a.FileBuilder = a.FileBuilder.Init(a.AgentConfigPath)
+	a.file = file.GetFile(a.AgentConfigPath)
 
 	logLevel, err := logrus.ParseLevel(a.AgentBuilder.LogLevel)
 	if err != nil {
@@ -60,48 +61,48 @@ func startSync() {
 }
 
 // Sync defines a routine for syncing the dns records present in the docker swarm and being managed by the bindman dns manager
-// func (a *Agent) Sync() {
-// 	var maxTries uint = 100
-// 	var leftTries uint = 100
+func (a *Agent) Sync() {
+	var maxTries uint = 100
+	var leftTries uint = 100
 
-// 	for leftTries > 0 {
-// 		func() {
-// 			defer a.SyncLock.Unlock()
-// 			a.SyncLock.Lock()
+	for leftTries > 0 {
+		func() {
+			defer a.SyncLock.Unlock()
+			a.SyncLock.Lock()
 
-// 			for _, record := range a.File.Records {
-// 				logrus.Infof("%v", record)
+			for _, record := range a.file.Records {
+				logrus.Infof("%v", record)
 
-// 				bs, err := a.WebhookClient.GetRecord(record.Name, "A")
-// 				if err != nil { // means record was not found on manager; so we create it
-// 					a.delegate("create", a.File.Domain, record)
-// 				}
+				bs, err := a.WebhookClient.GetRecord(record.Name, "A")
+				if err != nil { // means record was not found on manager; so we create it
+					a.delegate("create", a.file.Domain, record)
+				}
 
-// 				if bs.Name != record.Name || bs.Value != a.DNSReverseProxyAddr || bs.Type != "A" { // if true, record exists and needs to be update
-// 					a.delegate("update", a.File.Domain, record)
-// 				}
-// 			}
-// 		}()
-// 		backoffWait(maxTries, leftTries, time.Minute) // wait time increases exponentially
-// 		leftTries--
-// 	}
-// }
+				if bs.Name != record.Name || bs.Value != a.DNSReverseProxyAddr || bs.Type != "A" { // if true, record exists and needs to be update
+					a.delegate("update", a.file.Domain, record)
+				}
+			}
+		}()
+		backoffWait(maxTries, leftTries, time.Minute) // wait time increases exponentially
+		leftTries--
+	}
+}
 
 // delegate appropriately calls the dns manager to handle the addition or removal of a DNS rule
-// func (a *Agent) delegate(action string, domain string, record *file.Records) {
-// 	var ok bool
-// 	var err error
+func (a *Agent) delegate(action string, domain string, record file.Records) {
+	var ok bool
+	var err error
 
-// 	if action == "update" {
-// 		ok, err = a.WebhookClient.UpdateRecord(&hookTypes.DNSRecord{Name: record.Name, Type: record.Type, Value: record.Value})
-// 	}
+	if action == "update" {
+		ok, err = a.WebhookClient.UpdateRecord(&hookTypes.DNSRecord{Name: record.Name, Type: record.Type, Value: record.Value})
+	}
 
-// 	if action == "create" {
-// 		ok, err = a.WebhookClient.AddRecord(record.Name, record.Type, record.Value) // adds to the dns manager
-// 	}
+	if action == "create" {
+		ok, err = a.WebhookClient.AddRecord(record.Name, record.Type, record.Value) // adds to the dns manager
+	}
 
-// 	if !ok {
-// 		logrus.Errorf("Error to %v the Domain '%v' from the service '%v': %v", action, domain, record.Name, err)
-// 	}
+	if !ok {
+		logrus.Errorf("Error to %v the Domain '%v' from the service '%v': %v", action, domain, record.Name, err)
+	}
 
-// }
+}
