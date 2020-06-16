@@ -16,7 +16,7 @@ var agentCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		builder := new(config.AgentBuilder).Init(viper.GetViper())
 		agent := new(agent.Agent).InitFromAgentBuilder(builder)
-		// agent.Sync()
+		go agent.Sync()
 		agent.Run()
 		return nil
 	},
