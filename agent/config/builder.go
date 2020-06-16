@@ -36,7 +36,7 @@ func AddFlags(flags *pflag.FlagSet) {
 	flags.StringP(dnsReverseProxyAddr, "r", "", "Bindman DNS Reverse Proxy Address")
 	flags.StringP(agentConfigPath, "c", "", "Bindman Agent Config Path")
 	flags.StringP(logLevel, "l", "info", "[optional] Sets the Log Level to one of seven (trace, debug, info, warn, error, fatal, panic). Default: info")
-	flags.StringP(port, "p", "7071", "[optional] Custom port for accessing bindman agent's services. Default: 7071")
+	flags.StringP(port, "p", "7070", "[optional] Custom port for accessing bindman agent's services. Default: 7070")
 }
 
 // Init initializes the web server builder with properties retrieved from Viper.
