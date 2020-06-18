@@ -13,7 +13,6 @@ const (
 	dnsReverseProxyAddr = "dns-reverse-proxy-addr"
 	agentConfigPath     = "agent-config-file"
 	logLevel            = "log-level"
-	port                = "port"
 )
 
 // Flags define the fields that will be passed via cmd
@@ -22,7 +21,6 @@ type Flags struct {
 	DNSReverseProxyAddr string
 	AgentConfigPath     string
 	LogLevel            string
-	Port                string
 }
 
 // AgentBuilder defines the parametric information of a server instance
@@ -36,7 +34,6 @@ func AddFlags(flags *pflag.FlagSet) {
 	flags.StringP(dnsReverseProxyAddr, "r", "", "Bindman DNS Reverse Proxy Address")
 	flags.StringP(agentConfigPath, "c", "", "Bindman Agent Config Path")
 	flags.StringP(logLevel, "l", "info", "[optional] Sets the Log Level to one of seven (trace, debug, info, warn, error, fatal, panic). Default: info")
-	flags.StringP(port, "p", "7070", "[optional] Custom port for accessing bindman agent's services. Default: 7070")
 }
 
 // Init initializes the web server builder with properties retrieved from Viper.
@@ -46,7 +43,6 @@ func (b *AgentBuilder) Init(v *viper.Viper) *AgentBuilder {
 	flags.DNSReverseProxyAddr = v.GetString(dnsReverseProxyAddr)
 	flags.AgentConfigPath = v.GetString(agentConfigPath)
 	flags.LogLevel = v.GetString(logLevel)
-	flags.Port = v.GetString(port)
 	flags.check()
 
 	b.Flags = flags

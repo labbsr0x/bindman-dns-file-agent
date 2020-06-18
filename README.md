@@ -14,11 +14,12 @@ bindman-dns-file-agent requires [Golang](https://golang.org/dl/) v1.13, a [BIND9
 Some parameters are required to running the api, these parameters can be passed via the command line or environment variables as described below
 
 
-| ENV                              | Command | Required | Default  | Description                                        |
-|----------------------------------|---------|----------|----------|----------------------------------------------------|
-| BINDMAN_DNS_MANAGER_ADDR         | -d      | true     | null     | Bindman DNS Manager Address                        |
-| BINDMAN_DNS_REVERSE_PROXY_ADDR   | -r      | true     | null     | Bindman DNS Reverse Proxy Address                  |
-| BINDMAN_AGENT_CONFIG_PATH        | -c      | true     | null     | Bindman Agent Config Path                          |
+| ENV                              | Command | Required | Default  | Description                                                                                       |
+|----------------------------------|---------|----------|----------|---------------------------------------------------------------------------------------------------|
+| BINDMAN_DNS_MANAGER_ADDR         | -d      | true     | null     | Bindman DNS Manager Address                                                                       |
+| BINDMAN_DNS_REVERSE_PROXY_ADDR   | -r      | true     | null     | Bindman DNS Reverse Proxy Address                                                                 |
+| BINDMAN_AGENT_CONFIG_PATH        | -c      | true     | null     | Bindman Agent Config Path                                                                         |
+| BINDMAN_LOG_LEVEL                | -l      | false    | info     | Sets the Log Level to one of seven (trace, debug, info, warn, error, fatal, panic). Default: info |
 
 
 ## How to run

@@ -33,19 +33,16 @@ services:
       - BINDMAN_DNS_REMOVAL_DELAY=1
       - BINDMAN_DEBUG=false
 
-  bindman-dns-file-agent:
-    image: labbsr0x/bindman-dns-file-agent
-    build: .
-    depends_on:
-      - bindman-dns-bind9
-    ports:
-      - 7080:7070
-    volumes:
-      - .agent:/data
-    environment:
-      - BINDMAN_DNS_MANAGER_ADDR=http://bindman-dns-bind9:7070
-      - BINDMAN_DNS_REVERSE_PROXY_ADDR=0.0.0.0
-      - BINDMAN_AGENT_CONFIG_FILE=/data/bindman_agent.json
+  # bindman-dns-file-agent:
+  #   image: labbsr0x/bindman-dns-file-agent
+  #   depends_on:
+  #     - bindman-dns-bind9
+  #   volumes:
+  #     - .agent:/data
+  #   environment:
+  #     - BINDMAN_DNS_MANAGER_ADDR=http://bindman-dns-bind9:7070
+  #     - BINDMAN_DNS_REVERSE_PROXY_ADDR=0.0.0.0
+  #     - BINDMAN_AGENT_CONFIG_FILE=/data/bindman_agent.json
 
 
 volumes:

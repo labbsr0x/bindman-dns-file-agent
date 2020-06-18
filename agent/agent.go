@@ -18,7 +18,6 @@ import (
 type Agent struct {
 	*config.AgentBuilder
 	file          file.File
-	app           *gin.Engine
 	SyncLock      *sync.RWMutex
 	WebhookClient *hook.DNSWebhookClient
 }
@@ -26,7 +25,6 @@ type Agent struct {
 // InitFromAgentBuilder builds a Server instance
 func (a *Agent) InitFromAgentBuilder(agentBuilder *config.AgentBuilder) *Agent {
 	a.AgentBuilder = agentBuilder
-	a.app = gin.Default()
 	a.file = file.GetFile(a.AgentConfigPath)
 	a.SyncLock = new(sync.RWMutex)
 	webhookClient, err := hook.New(a.DNSManagerAddr, http.DefaultClient)
@@ -44,15 +42,6 @@ func (a *Agent) InitFromAgentBuilder(agentBuilder *config.AgentBuilder) *Agent {
 	logrus.SetLevel(logLevel)
 
 	return a
-}
-
-// Run a Server instance
-func (a *Agent) Run() {
-	consumerGroup := a.app.Group("/")
-	{
-		consumerGroup.GET("/", index)
-	}
-	a.app.Run("0.0.0.0:" + a.AgentBuilder.Port)
 }
 
 func index(ctx *gin.Context) {
@@ -85,6 +74,12 @@ func (a *Agent) Sync() {
 		backoffWait(maxTries, leftTries, time.Minute) // wait time increases exponentially
 		leftTries--
 	}
+}
+
+// Loop is a method with infinite loop
+func (a *Agent) Run() {
+	logrus.Info("Starting loop...")
+	select {}
 }
 
 // delegate appropriately calls the dns manager to handle the addition or update of a DNS rule
