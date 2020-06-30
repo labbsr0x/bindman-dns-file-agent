@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/labbsr0x/bindman-dns-file-agent/config"
+	"github.com/labbsr0x/bindman-dns-file-agent/agent"
+	"github.com/labbsr0x/bindman-dns-file-agent/agent/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -15,7 +14,10 @@ var agentCmd = &cobra.Command{
 	Short:   "Starts the sync agent with Bindman",
 	Long:    "Starts the sync agent with Bindman",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Println("Making something")
+		builder := new(config.AgentBuilder).Init(viper.GetViper())
+		agent := new(agent.Agent).InitFromAgentBuilder(builder)
+		go agent.Sync()
+		agent.Run()
 		return nil
 	},
 }

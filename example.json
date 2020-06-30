@@ -1,0 +1,30 @@
+{
+	"domain":"test.com",
+	"records":[
+		{
+			"name":"smtp.test.com",
+			"value":"127.0.0.1",
+			"type":"A"
+		},
+		{
+			"name":"imap.test.com",
+			"value":"127.0.0.1",
+			"type":"A"
+		},
+		{
+			"name":"pop3.test.com",
+			"value":"127.0.0.1",
+			"type":"A"
+		},
+		{
+			"name":"hello.test.com",
+			"value":"127.0.0.12",
+			"type":"A"
+		},
+		{
+			"name":"www.test.com",
+			"value":"127.0.0.12",
+			"type":"A"
+		}
+	]
+}

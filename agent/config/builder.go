@@ -11,34 +11,38 @@ import (
 const (
 	dnsManagerAddr      = "dns-manager-addr"
 	dnsReverseProxyAddr = "dns-reverse-proxy-addr"
-	dnsConfigFile       = "dns-config-file"
+	agentConfigPath     = "agent-config-path"
+	logLevel            = "log-level"
 )
 
 // Flags define the fields that will be passed via cmd
 type Flags struct {
 	DNSManagerAddr      string
 	DNSReverseProxyAddr string
-	DNSConfigFile       string
+	AgentConfigPath     string
+	LogLevel            string
 }
 
-// WebBuilder defines the parametric information of a server instance
-type WebBuilder struct {
+// AgentBuilder defines the parametric information of a server instance
+type AgentBuilder struct {
 	*Flags
 }
 
 // AddFlags adds flags for Builder.
 func AddFlags(flags *pflag.FlagSet) {
-	flags.StringP(dnsManagerAddr, "d", "", "DNS Manager Address")
-	flags.StringP(dnsReverseProxyAddr, "r", "", "DNS Reverse Proxy Address")
-	flags.StringP(dnsConfigFile, "f", "", "DNS Config File")
+	flags.StringP(dnsManagerAddr, "d", "", "Bindman DNS Manager Address")
+	flags.StringP(dnsReverseProxyAddr, "r", "", "Bindman DNS Reverse Proxy Address")
+	flags.StringP(agentConfigPath, "c", "", "Bindman Agent Config Path")
+	flags.StringP(logLevel, "l", "info", "[optional] Sets the Log Level to one of seven (trace, debug, info, warn, error, fatal, panic). Default: info")
 }
 
 // Init initializes the web server builder with properties retrieved from Viper.
-func (b *WebBuilder) Init(v *viper.Viper) *WebBuilder {
+func (b *AgentBuilder) Init(v *viper.Viper) *AgentBuilder {
 	flags := new(Flags)
 	flags.DNSManagerAddr = v.GetString(dnsManagerAddr)
 	flags.DNSReverseProxyAddr = v.GetString(dnsReverseProxyAddr)
-	flags.DNSConfigFile = v.GetString(dnsConfigFile)
+	flags.AgentConfigPath = v.GetString(agentConfigPath)
+	flags.LogLevel = v.GetString(logLevel)
 	flags.check()
 
 	b.Flags = flags
@@ -55,7 +59,7 @@ func (flags *Flags) check() {
 	}{
 		{flags.DNSManagerAddr, dnsManagerAddr},
 		{flags.DNSReverseProxyAddr, dnsReverseProxyAddr},
-		{flags.DNSConfigFile, dnsConfigFile},
+		{flags.AgentConfigPath, agentConfigPath},
 	}
 
 	var errMsg string

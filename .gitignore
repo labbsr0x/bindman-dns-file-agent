@@ -14,4 +14,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+.agent/
+.bind9/
+.bindman/
+
 .vscode/
