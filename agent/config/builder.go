@@ -11,7 +11,7 @@ import (
 const (
 	dnsManagerAddr      = "dns-manager-addr"
 	dnsReverseProxyAddr = "dns-reverse-proxy-addr"
-	agentConfigPath     = "agent-config-file"
+	agentConfigPath     = "agent-config-path"
 	logLevel            = "log-level"
 )
 

@@ -8,7 +8,6 @@ import (
 	hook "github.com/labbsr0x/bindman-dns-webhook/src/client"
 	hookTypes "github.com/labbsr0x/bindman-dns-webhook/src/types"
 
-	"github.com/gin-gonic/gin"
 	"github.com/labbsr0x/bindman-dns-file-agent/agent/config"
 	"github.com/labbsr0x/bindman-dns-file-agent/file"
 	"github.com/sirupsen/logrus"
@@ -25,13 +24,15 @@ type Agent struct {
 // InitFromAgentBuilder builds a Server instance
 func (a *Agent) InitFromAgentBuilder(agentBuilder *config.AgentBuilder) *Agent {
 	a.AgentBuilder = agentBuilder
+
 	a.file = file.GetFile(a.AgentConfigPath)
+
 	a.SyncLock = new(sync.RWMutex)
+
 	webhookClient, err := hook.New(a.DNSManagerAddr, http.DefaultClient)
 	if err != nil {
 		logrus.Errorf("Not able to parse log level string. Setting default level: info.")
 	}
-
 	a.WebhookClient = webhookClient
 
 	logLevel, err := logrus.ParseLevel(a.AgentBuilder.LogLevel)
@@ -42,10 +43,6 @@ func (a *Agent) InitFromAgentBuilder(agentBuilder *config.AgentBuilder) *Agent {
 	logrus.SetLevel(logLevel)
 
 	return a
-}
-
-func index(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "Welcome to Bindman DNS File Agent")
 }
 
 // Sync defines a routine for syncing the dns records present in the docker swarm and being managed by the bindman dns manager
@@ -78,7 +75,7 @@ func (a *Agent) Sync() {
 
 // Loop is a method with infinite loop
 func (a *Agent) Run() {
-	logrus.Info("Starting loop...")
+	logrus.Info("Starting Bindman DNS File Agent...")
 	select {}
 }
 
