@@ -13,7 +13,7 @@
 - [Maintenance](#maintenance)
   - [Upgrading](#upgrading)
   - [Shell Access](#shell-access)
-  - [How to run with GO](#how-to-run-with-go)
+- [How to run using GO](#how-to-run-using-go)
 
 # How it works
 
@@ -160,7 +160,7 @@ or
 make docker-exec
 ```
 
-## How to run with GO
+# How to run using GO
 
 With all dependencies running, start the agent.
 
